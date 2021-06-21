@@ -2,20 +2,19 @@ package com.jhdroid.ble.sample.ui.scan
 
 import android.bluetooth.BluetoothDevice
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.jhdroid.ble.sample.R
 import com.jhdroid.ble.sample.databinding.ItemDeviceListBinding
 
 class DeviceListAdapter: RecyclerView.Adapter<DeviceListAdapter.ViewHolder>() {
 
     private val deviceList = arrayListOf<BluetoothDevice>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ItemDeviceListBinding>(layoutInflater, viewType, parent, false)
-        return ViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_device_list, parent, false)
+    )
 
     override fun getItemCount(): Int = deviceList.size
 
@@ -30,7 +29,10 @@ class DeviceListAdapter: RecyclerView.Adapter<DeviceListAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(private val binding: ItemDeviceListBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+        private var binding = ItemDeviceListBinding.bind(itemView)
+
         fun bind(item: BluetoothDevice) {
             binding.device = item
         }

@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jhdroid.ble.sample.databinding.ActivityDeviceScanBinding
 import com.jhdroid.ble.sample.util.Constant
 import com.jhdroid.ble.sample.util.getBluetoothAdapter
@@ -29,7 +30,14 @@ class DeviceScanActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        setupRecyclerView()
+
         scanDevice()
+    }
+
+    private fun setupRecyclerView() {
+        binding.deviceScanListRv.adapter = deviceListAdapter
+        binding.deviceScanListRv.layoutManager = LinearLayoutManager(this)
     }
 
     private fun scanDevice() {
@@ -38,8 +46,10 @@ class DeviceScanActivity: AppCompatActivity() {
                 isScanning = false
                 stopScan()
                 setLoadingViewVisibility(false)
-                toast("기기를 찾지 못함 :(")
-                finish()
+                toast("스캔 종료 :)")
+                if (deviceListAdapter.itemCount == 0) {
+                    finish()
+                }
             }, Constant.SCAN_PERIOD)
 
             isScanning = true

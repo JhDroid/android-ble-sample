@@ -8,6 +8,7 @@
 
     <!-- If your app targets Android 9 or lower, you can declare ACCESS_COARSE_LOCATION instead. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- run only on devices that support low energy mode -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="false"/>
