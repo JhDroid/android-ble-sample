@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jhdroid.ble.sample">
 
-    <!--bluetooth permission-->
+    <!--require bluetooth permission-->
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- If your app targets Android 9 or lower, you can declare ACCESS_COARSE_LOCATION instead. -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- run only on devices that support low energy mode -->

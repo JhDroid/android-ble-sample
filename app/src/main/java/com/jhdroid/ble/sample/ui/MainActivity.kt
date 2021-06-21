@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkLowEnergyMode()
                 checkBluetoothEnabled()
             } else {
@@ -49,13 +49,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val permission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+            val isDeniedPermission = (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED)
 
-            if (permission == PackageManager.PERMISSION_DENIED) {
-                val permissions = arrayOfNulls<String>(2)
-                permissions[0] = Manifest.permission.ACCESS_FINE_LOCATION
-                permissions[1] = Manifest.permission.ACCESS_COARSE_LOCATION
-
+            if (isDeniedPermission) {
+                val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
                 requestPermissions(permissions, Constant.LOCATION_PERMISSION_REQUEST_CODE)
             }
         }
