@@ -10,6 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jhdroid.ble.sample.databinding.ActivityDeviceScanBinding
 import com.jhdroid.ble.sample.util.Constant
@@ -36,8 +37,11 @@ class DeviceScanActivity: AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        binding.deviceScanListRv.adapter = deviceListAdapter
-        binding.deviceScanListRv.layoutManager = LinearLayoutManager(this)
+        with(binding.deviceScanListRv) {
+            adapter = deviceListAdapter
+            layoutManager = LinearLayoutManager(this@DeviceScanActivity)
+            addItemDecoration(DividerItemDecoration(this@DeviceScanActivity, DividerItemDecoration.VERTICAL))
+        }
     }
 
     private fun scanDevice() {
