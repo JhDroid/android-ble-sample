@@ -15,7 +15,6 @@ import com.jhdroid.ble.sample.util.getBluetoothAdapter
 import com.jhdroid.ble.sample.util.missingSystemFeature
 import com.jhdroid.ble.sample.util.toast
 
-
 class MainActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -53,8 +52,9 @@ class MainActivity : AppCompatActivity() {
             val permission = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
 
             if (permission == PackageManager.PERMISSION_DENIED) {
-                val permissions = arrayOfNulls<String>(1)
+                val permissions = arrayOfNulls<String>(3)
                 permissions[0] = Manifest.permission.ACCESS_COARSE_LOCATION
+
                 requestPermissions(permissions, Constant.LOCATION_PERMISSION_REQUEST_CODE)
             }
         }

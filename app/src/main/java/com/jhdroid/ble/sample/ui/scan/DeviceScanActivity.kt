@@ -38,10 +38,12 @@ class DeviceScanActivity: AppCompatActivity() {
                 isScanning = false
                 stopScan()
                 setLoadingViewVisibility(false)
+                toast("기기를 찾지 못함 :(")
+                finish()
             }, Constant.SCAN_PERIOD)
 
             isScanning = true
-            scan()
+            scanBleDevice()
             setLoadingViewVisibility(true)
         } else {
             isScanning = false
@@ -52,7 +54,7 @@ class DeviceScanActivity: AppCompatActivity() {
         }
     }
 
-    private fun scan() {
+    private fun scanBleDevice() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bluetoothAdapter?.bluetoothLeScanner?.startScan(scanCallback)
         } else {
@@ -74,7 +76,6 @@ class DeviceScanActivity: AppCompatActivity() {
         deviceListAdapter.addDevice(device)
     }
 
-    // callbackType, result
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
