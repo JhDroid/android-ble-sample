@@ -80,6 +80,7 @@ class DeviceScanActivity: AppCompatActivity() {
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
+            Timber.d("callbackType : $callbackType")
 
             result?.device?.let {
                 Timber.d("device info : ${it.name} : ${it.address}")
