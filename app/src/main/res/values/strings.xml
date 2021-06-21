@@ -2,5 +2,5 @@
     <string name="app_name">ble-sample</string>
 
     <string name="device_list_name">기기명 : %1$s</string>
-    <string name="device_list_address">별명 : %1$s</string>
+    <string name="device_list_address">주소 : %1$s</string>
 </resources>
