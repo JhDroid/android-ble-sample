@@ -36,6 +36,12 @@ class DeviceScanActivity: AppCompatActivity() {
         scanDevice()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        stopScan()
+    }
+
     private fun setupRecyclerView() {
         with(binding.deviceScanListRv) {
             adapter = deviceListAdapter
@@ -57,7 +63,7 @@ class DeviceScanActivity: AppCompatActivity() {
             }, Constant.SCAN_PERIOD)
 
             isScanning = true
-            scanBleDevice()
+            startDeviceScan()
             setLoadingViewVisibility(true)
         } else {
             isScanning = false
@@ -68,7 +74,7 @@ class DeviceScanActivity: AppCompatActivity() {
         }
     }
 
-    private fun scanBleDevice() {
+    private fun startDeviceScan() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             bluetoothAdapter?.bluetoothLeScanner?.startScan(scanCallback)
         } else {
@@ -94,7 +100,6 @@ class DeviceScanActivity: AppCompatActivity() {
     private val scanCallback = object : ScanCallback() {
         override fun onScanResult(callbackType: Int, result: ScanResult?) {
             super.onScanResult(callbackType, result)
-            Timber.d("callbackType : $callbackType")
 
             result?.device?.let {
                 Timber.d("device info : ${it.name} : ${it.address}")
@@ -104,7 +109,6 @@ class DeviceScanActivity: AppCompatActivity() {
     }
     
     private fun setLoadingViewVisibility(isVisible: Boolean) {
-        binding.deviceScanLoadingDesTv.isVisible = isVisible
-        binding.deviceScanLoadingPb.isVisible = isVisible
+        binding.deviceScanLoadingViewContainer.isVisible = isVisible
     }
 }
