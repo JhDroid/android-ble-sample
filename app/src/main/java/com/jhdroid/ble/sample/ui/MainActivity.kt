@@ -47,20 +47,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val isDeniedPermission = (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED)
-
-            if (isDeniedPermission) {
-                val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-                requestPermissions(permissions, Constant.LOCATION_PERMISSION_REQUEST_CODE)
+    private fun setupView() {
+        binding.mainDeviceScanBtn.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(Intent(this@MainActivity, DeviceScanActivity::class.java))
+                } else {
+                    toast("권한을 허용해야 함 :(")
+                }
+            } else {
+                startActivity(Intent(this@MainActivity, DeviceScanActivity::class.java))
             }
         }
     }
 
-    private fun setupView() {
-        binding.mainDeviceScanBtn.setOnClickListener {
-            startActivity(Intent(this@MainActivity, DeviceScanActivity::class.java))
+    private fun checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+                val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+                requestPermissions(permissions, Constant.LOCATION_PERMISSION_REQUEST_CODE)
+            }
         }
     }
 
