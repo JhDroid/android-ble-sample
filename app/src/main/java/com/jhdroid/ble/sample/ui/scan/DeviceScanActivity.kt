@@ -56,7 +56,6 @@ class DeviceScanActivity: AppCompatActivity() {
                 isScanning = false
                 stopScan()
                 setLoadingViewVisibility(false)
-                toast("스캔 종료 :)")
                 if (deviceListAdapter.itemCount == 0) {
                     finish()
                 }
@@ -88,6 +87,8 @@ class DeviceScanActivity: AppCompatActivity() {
         } else {
             bluetoothAdapter?.startLeScan(leScanCallback)
         }
+
+        toast("스캔 종료 :)")
     }
 
     // device, rssi, scanRecord
