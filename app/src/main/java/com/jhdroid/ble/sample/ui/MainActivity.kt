@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.jhdroid.ble.sample.databinding.ActivityMainBinding
 import com.jhdroid.ble.sample.ui.scan.DeviceScanActivity
 import com.jhdroid.ble.sample.util.Constant
@@ -15,7 +15,7 @@ import com.jhdroid.ble.sample.util.getBluetoothAdapter
 import com.jhdroid.ble.sample.util.missingSystemFeature
 import com.jhdroid.ble.sample.util.toast
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
@@ -24,14 +24,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         checkPermission()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constant.REQUEST_ENABLE_BT) {
-            toast(if (resultCode == Activity.RESULT_OK) "Bluetooth 활성화" else "Bluetooth 비활성화")
+        if (requestCode == Constant.REQUEST_ENABLE_BT) { // 블루투스 비활성화 상태면 검색 불가능
+            if (resultCode == Activity.RESULT_OK) {
+                startActivity(Intent(this@MainActivity, DeviceScanActivity::class.java))
+            } else{
+                toast("Bluetooth 활성화 필요")
+            }
         }
     }
 
@@ -40,7 +48,6 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == Constant.LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 checkLowEnergyMode()
-                checkBluetoothEnabled()
             } else {
                 toast("권한 허용 필요 :(")
             }
@@ -51,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         binding.mainDeviceScanBtn.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    startActivity(Intent(this@MainActivity, DeviceScanActivity::class.java))
+                    checkBluetoothEnabled() // 권한 허용하면 블루투스 활성화 체크 (onActivityResult)
                 } else {
-                    toast("권한을 허용해야 함 :(")
+                    toast("권한을 허용해야 이용 가능 :(")
                 }
             } else {
                 startActivity(Intent(this@MainActivity, DeviceScanActivity::class.java))
